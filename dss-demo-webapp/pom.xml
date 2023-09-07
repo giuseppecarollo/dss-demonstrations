@@ -474,6 +474,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+		  <groupId>eu.europa.ec.joinup.sd-dss</groupId>
+		  <artifactId>sispi-dss-report-soap</artifactId>
+		  <version>5.12.1</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>

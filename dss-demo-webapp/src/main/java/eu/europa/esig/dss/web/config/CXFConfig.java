@@ -85,6 +85,7 @@ public class CXFConfig {
 	public static final String SOAP_CERTIFICATE_VALIDATION = "/soap/certificate-validation";
 	public static final String SOAP_SERVER_SIGNING = "/soap/server-signing";
 	public static final String SOAP_TIMESTAMP_SERVICE = "/soap/timestamp-service";
+	public static final String SOAP_SISPI_VALIDATION = "/soap/sispi-validation"; // SISPI
 
 	public static final String REST_SIGNATURE_ONE_DOCUMENT = "/rest/signature/one-document";
 	public static final String REST_SIGNATURE_MULTIPLE_DOCUMENTS = "/rest/signature/multiple-documents";
@@ -214,6 +215,13 @@ public class CXFConfig {
 	}
 
 	@Bean
+	public SoapDocumentValidationService soapSispiValitationService() {
+	  SoapDocumentValidationServiceImpl service = new SoapDocumentValidationServiceImpl();
+	  service.setValidationService(remoteValidationService);
+	  return service;
+	}
+
+	@Bean
 	public Endpoint createSoapSignatureEndpoint() {
 		EndpointImpl endpoint = new EndpointImpl(bus, soapDocumentSignatureService());
 		endpoint.publish(SOAP_SIGNATURE_ONE_DOCUMENT);
@@ -289,6 +297,14 @@ public class CXFConfig {
 		enableMTOM(endpoint);
 		return endpoint;
 	}
+	
+  @Bean
+  public Endpoint createSoapRemoteSispiValidationEndpoint() {
+    EndpointImpl endpoint = new EndpointImpl(bus, soapTimestampService());
+    endpoint.publish(SOAP_SISPI_VALIDATION);
+    enableMTOM(endpoint);
+    return endpoint;
+  }
 
 	private void addXmlAdapterDate(EndpointImpl endpoint) {
 		JAXBDataBinding jaxbDataBinding = new JAXBDataBinding();
